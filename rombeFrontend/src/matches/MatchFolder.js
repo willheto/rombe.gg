@@ -177,23 +177,35 @@ const MatchFolder = (props) => {
             }).then(resp => {
 
                 let type = DATATYPE_FLEXQ
+                let flexTier
+                let flexDiv
+                let flexLp
+                let soloTier
+                let soloDiv
+                let soloLp
                 if(checkQueueValidity(resp.data[type]))
                 {
-                    setRank({
-                        tier2: resp.data[type].tier,
-                        division2: resp.data[type].rank,
-                        lp2: resp.data[type].leaguePoints
-                    })
+                    flexTier = resp.data[type].tier
+                    flexDiv = resp.data[type].rank
+                    flexLp = resp.data[type].leaguePoints
                 }
                 type = DATATYPE_SOLOQ
                 if(checkQueueValidity(resp.data[type]))
                 {
-                    setRank({
-                        tier1: resp.data[type].tier,
-                        division1: resp.data[type].rank,
-                        lp1: resp.data[type].leaguePoints
-                    })
+                    soloTier = resp.data[type].tier
+                    soloDiv = resp.data[type].rank
+                    soloLp = resp.data[type].leaguePoints
                 }
+
+                setRank ({
+                    tier1: soloTier,
+                    div1: soloDiv,
+                    lp1: soloLp,
+                    tier2: flexTier,
+                    div2: flexDiv,
+                    lp2: flexLp
+                })
+
             })
             console.log(resp.data)
             axios.get('http://localhost:3001/api/matches', {
