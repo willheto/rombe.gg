@@ -5,6 +5,10 @@ import './matchfolder.css'
 import './Sidepanel'
 import Sidepanel from './Sidepanel'
 
+
+const DATATYPE_SOLOQ = 1
+const DATATYPE_FLEXQ = 0
+
 const MatchFolder = (props) => {
 
     const champions =
@@ -150,6 +154,13 @@ const MatchFolder = (props) => {
     const [matchDetails, setMatchDetails] = useState([])
     const [rank, setRank] = useState([])
 
+    function checkQueueValidity(queueData) {
+        // check according to queuetype
+        if (typeof(queueData) === 'undefined') return false
+
+            return true
+    }
+
     const findUser = (event) => {
 
         event.preventDefault()
@@ -165,14 +176,24 @@ const MatchFolder = (props) => {
                 }
             }).then(resp => {
 
-                setRank({
-                    tier1: resp.data[0].tier,
-                    division1: resp.data[0].rank,
-                    lp1: resp.data[0].leaguePoints,
-                    tier2: resp.data[1].tier,
-                    division2: resp.data[1].rank,
-                    lp2: resp.data[1].leaguePoints
-                })
+                let type = DATATYPE_FLEXQ
+                if(checkQueueValidity(resp.data[type]))
+                {
+                    setRank({
+                        tier2: resp.data[type].tier,
+                        division2: resp.data[type].rank,
+                        lp2: resp.data[type].leaguePoints
+                    })
+                }
+                type = DATATYPE_SOLOQ
+                if(checkQueueValidity(resp.data[type]))
+                {
+                    setRank({
+                        tier1: resp.data[type].tier,
+                        division1: resp.data[type].rank,
+                        lp1: resp.data[type].leaguePoints
+                    })
+                }
             })
             console.log(resp.data)
             axios.get('http://localhost:3001/api/matches', {
@@ -195,22 +216,22 @@ const MatchFolder = (props) => {
                         console.log(resp.data)
                         switch (resp.data.queueId) {
                             case 440:
-                                gameInfo[index].gameMode = "Ranked Flex"
-                                break;
+                            gameInfo[index].gameMode = "Ranked Flex"
+                            break;
                             case 400:
-                                gameInfo[index].gameMode = "Draft Pick"
-                                break;
+                            gameInfo[index].gameMode = "Draft Pick"
+                            break;
                             case 420:
-                                gameInfo[index].gameMode = "Ranked Solo/Duo Queue"
-                                break;
+                            gameInfo[index].gameMode = "Ranked Solo/Duo Queue"
+                            break;
                             case 430:
-                                gameInfo[index].gameMode = "Blind Pick"
-                                break;
+                            gameInfo[index].gameMode = "Blind Pick"
+                            break;
                             case 450:
-                                gameInfo[index].gameMode = "ARAM"
-                                break;
+                            gameInfo[index].gameMode = "ARAM"
+                            break;
                             default:
-                                gameInfo[index].gameMode = "Ei tiedossa :D"
+                            gameInfo[index].gameMode = "Ei tiedossa :D"
 
                         }
                         resp.data.participantIdentities.map(name => {
@@ -249,33 +270,33 @@ const MatchFolder = (props) => {
 
             })
         })
-    }
-
-    const changeUser = (event) => {
-        event.preventDefault()
-
-        setUser(event.target.value)
-        console.log(user)
-    }
-
-    return (
-        <div>
-            <Sidepanel matches={matches} rank={rank}></Sidepanel>
-            <div class="matchFolder">
-                <h1>Etsi käyttäjä:</h1>
-                <form onSubmit={findUser}>
-                    <input value={user} onChange={changeUser}></input>
-                    <button type="submit">Etsi</button>
-                </form>
-                <h1>Match history</h1>
-
-                {matchDetails.map(match =>
-                    <Match gameMode={match.gameMode} win={match.win} kills={match.kills} deaths={match.deaths} assists={match.assists} duration={match.duration} champion={match.champion}></Match>
-                )}
-            </div>
-        </div>
-    );
 }
 
+const changeUser = (event) => {
+    event.preventDefault()
 
-export default MatchFolder;
+    setUser(event.target.value)
+    console.log(user)
+}
+
+return (
+    <div>
+    <Sidepanel matches={matches} rank={rank}></Sidepanel>
+    <div class="matchFolder">
+    <h1>Etsi käyttäjä:</h1>
+    <form onSubmit={findUser}>
+    <input value={user} onChange={changeUser}></input>
+    <button type="submit">Etsi</button>
+    </form>
+    <h1>Match history</h1>
+
+    {matchDetails.map(match =>
+        <Match gameMode={match.gameMode} win={match.win} kills={match.kills} deaths={match.deaths} assists={match.assists} duration={match.duration} champion={match.champion}></Match>
+        )}
+        </div>
+        </div>
+        );
+    }
+
+
+    export default MatchFolder;
