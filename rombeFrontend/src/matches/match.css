@@ -1,0 +1,23 @@
+.matchWon {
+    border: 1px solid black;
+    margin: 5px;
+    background-color: #197278;
+    height: 100px;
+}
+.matchLost {
+    border: 1px solid black;
+    margin: 5px;
+    background-color: #C44536;
+    height: 85px;
+}
+.matchLoading {
+    border: 1px solid black;
+    margin: 5px;
+}
+.championImg {
+    float: left;
+    width: 46px;
+    height: 46px;
+    margin: 18px;
+    margin-right: 0;
+}
