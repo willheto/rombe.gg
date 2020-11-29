@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import './match.css'
-import Twitch from '../championPhotos/LissandraSquare.png'
-import axios from 'axios'
-
-
 
 const Match = (props) => {
 
 
 
-    if (props.win == "Voitto") {
+    if (props.win === "Voitto") {
         return (
 
             <div class="matchWon">
 
-                <img class="championImg" src={`https://opgg-static.akamaized.net/images/lol/champion/${props.champion}.png?image=c_scale,q_auto,w_46&v=1606405946`} />
+                <img alt="champion played" class="championImg" src={`https://opgg-static.akamaized.net/images/lol/champion/${props.champion}.png?image=c_scale,q_auto,w_46&v=1606405946`} />
                 <b>
                     <p>
 
@@ -27,11 +23,11 @@ const Match = (props) => {
                 </b>
             </div>
         );
-    } else if (props.win == "Häviö") {
+    } else if (props.win === "Häviö") {
         return (
 
             <div class="matchLost">
-                <img class="championImg" src={`https://opgg-static.akamaized.net/images/lol/champion/${props.champion}.png?image=c_scale,q_auto,w_46&v=1606405946`} />
+                <img alt="champion played" class="championImg" src={`https://opgg-static.akamaized.net/images/lol/champion/${props.champion}.png?image=c_scale,q_auto,w_46&v=1606405946`} />
                 <b>
                     <p>
                         {props.gameMode} {props.win}
