@@ -51,7 +51,7 @@ app.get('/summonerIdByName', (req, res) => {
     }).then(resp => {
         res.send(resp.data)
     }).catch(error => {
-        return res.status(404).json({ error: 'summoner was not found' })
+        return res.status(404).json({ error: error })
     })
 })
 

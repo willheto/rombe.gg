@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Match from './Match'
 import matchService from '../services/matches'
-import axios from 'axios'
 import './matchfolder.css'
 import './Sidepanel'
 import Sidepanel from './Sidepanel'
@@ -102,13 +101,13 @@ const MatchFolder = (props) => {
                                     resp.data.participantIdentities.map(name => {
 
 
-                                        if (name.player.summonerName.toLowerCase() == user.toLowerCase()) {
+                                        if (name.player.summonerName.toLowerCase() === user.toLowerCase()) {
                                             resp.data.participants.map(partiC => {
-                                                if (partiC.participantId == name.participantId) {
+                                                if (partiC.participantId === name.participantId) {
                                                     gameInfo[index].champion = Champions[partiC.championId]
-                                                    if (partiC.stats.win == true) {
+                                                    if (partiC.stats.win === true) {
                                                         gameInfo[index].win = "Voitto"
-                                                    } else if (partiC.stats.win == false) {
+                                                    } else if (partiC.stats.win === false) {
                                                         gameInfo[index].win = "Häviö"
                                                     }
                                                     gameInfo[index].kills = partiC.stats.kills
